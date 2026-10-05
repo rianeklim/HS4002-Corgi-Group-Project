@@ -1,0 +1,7 @@
+lisa_pct65,dist_km_any,dist_km_public,extra_km_public,pct_pt_access,walk_home_m,n subzones
+High-High,1.7,2.1,0.4,100.0,124.1,31.0
+High-Low,3.2,3.2,0.0,100.0,109.9,6.0
+Low-High,1.7,2.0,0.0,100.0,135.4,9.0
+Low-Low,2.3,2.3,0.0,100.0,109.4,20.0
+Not significant,2.0,2.4,0.0,100.0,118.3,146.0
+Kruskal-Wallis p,0.261,0.506,0.000327,0.115,0.86,

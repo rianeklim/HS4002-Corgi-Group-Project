@@ -1,0 +1,129 @@
+# Singapore layers for the HS4002 ageing / healthcare-access study.
+#
+# Replaces the eight default categories with the layers the research question
+# needs: acute hospitals (destinations), public transport stops (the 400 m
+# walk-to-stop access test) and residential buildings (where elderly
+# residents live). Population counts come from the SingStat subzone census.
+#
+#   oex-cli osm --config configs/singapore_ageing.yaml
+iso3: SGP
+key: oex
+dataset_name: Singapore ageing access
+subnational: false
+frequency: yearly
+output:
+  dir: output
+  formats:
+    - geojson
+  zip_formats: []
+  metadata: true
+hdx:
+  push: false
+duckdb:
+  temp_dir: data/duckdb_temp
+source:
+  osm:
+    # Geofabrik only publishes Singapore inside malaysia-singapore-brunei
+    # (indexed as MY), so query the live Postpass service instead. SGP is
+    # well under its 2000 km2 limit; HOT Raw Data API is the backup.
+    engine: postpass
+    fallback_engine: rawdata
+
+categories:
+  # MOH acute hospitals: 11 public (9 acute general, KKH, IMH) and 9 private.
+  # OSM tags ~130 features as hospitals in Singapore, most of them community
+  # hospitals, testing centres or wards, so the `where` pins the 20 MOH
+  # facilities by OSM id. Thomson Medical Centre is only tagged
+  # building=hospital, and IMH is mapped as the Buangkok Green Medical Park
+  # campus, hence the wider filter.
+  - name: Acute Hospitals
+    osm:
+      enabled: true
+      filter:
+        amenity: ["hospital"]
+        healthcare: ["hospital"]
+        building: ["hospital"]
+      select:
+        - feature_id AS id
+        - tags['name'] AS name
+        - tags['operator'] AS operator
+        - tags['emergency'] AS emergency
+        - tags['addr:postcode'] AS postcode
+      where:
+        - >-
+          feature_id IN (
+          'way/75468299', 'relation/2303411', 'way/34403524', 'way/238933465',
+          'way/746034993', 'way/33570275', 'way/368005263', 'way/109104578',
+          'way/586389089', 'way/41663272', 'way/575304529',
+          'way/74715098', 'way/41890511', 'way/751064398', 'way/260549167',
+          'way/397219610', 'way/47134077', 'node/6746490215', 'way/252835078',
+          'way/1345623876')
+    overture:
+      enabled: false
+
+  # All OSM health facilities (clinics, GPs, dentists, pharmacies, every
+  # amenity=hospital). Broader than the study definition; kept because
+  # ageing_access/elderly_healthcare_access.ipynb locates hospitals from it.
+  - name: Healthcare Facilities
+    osm:
+      enabled: true
+      filter:
+        amenity: ["hospital", "clinic", "doctors", "dentist", "pharmacy"]
+        healthcare: true
+      select:
+        - feature_id AS id
+        - tags['name'] AS name
+        - tags['name:en'] AS name_en
+        - tags['amenity'] AS amenity
+        - tags['healthcare'] AS healthcare
+        - tags['healthcare:speciality'] AS speciality
+        - tags['emergency'] AS emergency
+        - tags['operator'] AS operator
+        - tags['operator:type'] AS operator_type
+        - tags['opening_hours'] AS opening_hours
+        - tags['wheelchair'] AS wheelchair
+        - tags['addr:postcode'] AS postcode
+      where: []
+    overture:
+      enabled: false
+
+  - name: Public Transport Stops
+    osm:
+      enabled: true
+      filter:
+        highway: ["bus_stop"]
+        railway: ["station", "halt", "subway_entrance"]
+        public_transport: ["station"]
+      select:
+        - feature_id AS id
+        - tags['name'] AS name
+        - tags['name:en'] AS name_en
+        - tags['highway'] AS highway
+        - tags['railway'] AS railway
+        - tags['station'] AS station
+        - tags['network'] AS network
+        - tags['ref'] AS ref
+        - tags['asset_ref'] AS asset_ref
+        - tags['wheelchair'] AS wheelchair
+        - tags['shelter'] AS shelter
+      where: []
+    overture:
+      enabled: false
+
+  # Where people live inside each subzone: elderly counts are spread over these
+  # buildings so distances are measured from homes, not subzone centroids.
+  - name: Residential Buildings
+    boundary_resolution: h3_neighbor
+    osm:
+      enabled: true
+      filter:
+        building: ["residential", "apartments", "house", "terrace", "semidetached_house", "detached", "bungalow"]
+      select:
+        - feature_id AS id
+        - tags['name'] AS name
+        - tags['building'] AS building
+        - tags['building:levels'] AS levels
+        - tags['addr:postcode'] AS postcode
+      where: []
+    overture:
+      enabled: false
