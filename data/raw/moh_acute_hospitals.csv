@@ -1,0 +1,21 @@
+osm_id,hospital,sector,hospital_type
+way/75468299,Singapore General Hospital,Public,Acute general
+relation/2303411,Tan Tock Seng Hospital,Public,Acute general
+way/34403524,Changi General Hospital,Public,Acute general
+way/238933465,National University Hospital,Public,Acute general
+way/746034993,Khoo Teck Puat Hospital,Public,Acute general
+way/33570275,Sengkang General Hospital,Public,Acute general
+way/368005263,Ng Teng Fong General Hospital,Public,Acute general
+way/109104578,Alexandra Hospital,Public,Acute general
+way/586389089,Woodlands Hospital,Public,Acute general
+way/41663272,KK Women's and Children's Hospital,Public,Women and children
+way/575304529,Institute of Mental Health,Public,Psychiatric
+way/74715098,Mount Alvernia Hospital,Private,Acute (not-for-profit)
+way/41890511,Gleneagles Hospital,Private,Acute
+way/751064398,Mount Elizabeth Hospital,Private,Acute
+way/260549167,Mount Elizabeth Novena Hospital,Private,Acute
+way/397219610,Parkway East Hospital,Private,Acute
+way/47134077,Raffles Hospital,Private,Acute
+node/6746490215,Farrer Park Hospital,Private,Acute
+way/252835078,Thomson Medical Centre,Private,Acute
+way/1345623876,Crawfurd Hospital,Private,Acute

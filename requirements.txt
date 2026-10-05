@@ -1,0 +1,11 @@
+pandas
+numpy
+scipy
+geopandas
+pyogrio
+matplotlib
+plotnine
+libpysal
+esda
+mapclassify
+ipykernel
