@@ -6,3 +6,16 @@ __pycache__/
 .Rhistory
 .venv/
 data/raw/*.sav
+
+# install the needed code
+pandas
+numpy
+scipy
+geopandas
+pyogrio
+matplotlib
+plotnine
+libpysal
+esda
+mapclassify
+ipykernel
